@@ -1,0 +1,4 @@
+name = Video Metadata
+description = Retrieves video properties from a file upload widget and stores them in the metadata property of a file object.
+core = 7.x
+package = Mckinsey & Company

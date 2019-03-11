@@ -1,0 +1,292 @@
+/*
+ * Styles essential to the sample
+ * are below
+ */
+
+
+.node .field-name-field-playlist-is-horizontal, .node .field-name-field-paragraph .field-label{display:none;}
+
+/*-- Vertical Layout --*/
+.video-js.vjs-default.vertical {
+	float: left;
+	width: 100%;
+}
+
+.player-container.vertical .video-data-section {
+	/*float:left;*/
+	/*width:70%;*/
+}
+
+
+
+/*-- Horizontal Layout --*/
+.vjs-playlist-horizontal {
+	height: 200px;
+	width: 100%;
+}
+
+.player-container.horizontal .video-data-section {
+	width:100%;
+}
+.player-container.horizontal .video-js.vjs-fluid {
+	float: left;
+	width:70%;
+}
+
+.player-container.horizontal .video-data-description-wrapper {
+	float:left;
+	width:30%;
+}
+
+.video-data-section.vjs-playlist-horizontal
+.video-data-description-wrapper {
+	clear:both;
+}
+
+.main-preview-player {
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-between;
+}
+
+.main-preview-player.vertical #one-up-medium {
+	margin-top: 0px;
+	width: 55%;
+}
+@media (min-width: 768px){
+	.main-preview-player #one-up-medium {
+		padding-bottom: 40p;
+	}
+	section.up {
+		margin-top: 40px;
+	}
+
+	.up>.block-list:last-child {
+		padding-bottom: 0;
+	}
+}
+	@media (min-width: 768px) {
+		.main-preview-player .block-list {
+			margin-bottom: 40px;
+		}
+
+		.up > .block-list {
+			padding-bottom: 1em;
+		}
+
+		.up .block-list {
+			position: relative;
+		}
+
+		.block-list, .block-list li {
+			list-style: none;
+			margin-left: 0;
+			padding-left: 0;
+			display: block;
+		}
+
+		.block-list {
+			margin: 0;
+		}
+
+		.wrapper {
+			max-width: 1440px;
+			margin-left: auto;
+			margin-right: auto;
+		}
+	}
+
+
+.playlist-container.preview-player-dimensions.vjs-fluid li {
+	padding-bottom: 0!important;
+	margin-bottom: 0!important;
+}
+.vjs-playlist {
+	overflow-y:auto;
+}
+.vertical .vjs-playlist, .vertical .vjs-mouse.vjs-playlist {
+	background: #f0f0f0;
+}
+.vertical li.vjs-playlist-item {
+	padding-bottom: 0px !important;
+}
+.vertical li.vjs-playlist-item {
+	clear: both;
+	width: 100%;
+	min-width: 100%;
+	padding: 20px 10px 20px 10px !important;
+}
+.vertical ol.vjs-playlist-item-list {
+	margin: 0px;
+	padding: 0px;
+}
+
+.vertical  .playlist-container.preview-player-dimensions.vjs-fluid {
+	float: left;
+	width: 45%;
+	margin: 0px;
+	max-width: 460px;
+	background-color: #EFF3F7;
+	height: 500px;
+	overflow: auto;
+}
+.vertical  .playlist-container .preview-player-dimensions.vjs-fluid {
+	padding-top: 0 !important;
+}
+
+.vertical .vjs-playlist .vjs-selected .vjs-playlist-thumbnail img, .vertical .vjs-mouse.vjs-playlist .vjs-selected .vjs-playlist-thumbnail img,
+.vertical .vjs-playlist .vjs-playlist-thumbnail img
+{
+	opacity: 1;
+	float: left;
+	width: 40%;
+}
+
+.vertical .vjs-playlist .vjs-playlist-title-container, .vertical .vjs-playlist .vjs-selected .vjs-playlist-title-container, .vertical .vjs-mouse.vjs-playlist .vjs-playlist-title-container {
+	width: 50%;
+}
+.vjs-playlist .vjs-selected, .vjs-mouse.vjs-playlist .vjs-selected {
+	background-color: #e4f8ff;
+	transition: background-color 0.5s ease;
+}
+
+.vjs-playlist-thumbnail {
+	max-width: none;
+	max-height: none;
+	position: relative;
+}
+.vjs-playlist .vjs-up-next .vjs-up-next-text, .vjs-mouse.vjs-playlist .vjs-up-next .vjs-up-next-text{ display: none; }
+
+.vertical .vjs-playlist .vjs-playlist-item cite {
+	font-size: 16px !important;
+	line-height: 1.5rem;
+	color: #00306e;
+	text-shadow: none;
+}
+
+.vertical cite.vjs-playlist-name {
+	float: left;
+}
+.vjs-playlist .vjs-playlist-item cite {
+	font-size: 2rem;
+	line-height: 1.6rem;
+	color: #00306e;
+	text-shadow: none;
+	font-size: 16px!important;
+	overflow: unset;
+	max-height: none;
+}
+
+.vertical .vjs-playlist-description {
+	font-size: 12px;
+	clear: both;
+	min-height: 48px;
+}
+.vjs-playlist-description {
+	display: none !important;
+}
+
+.vjs-playlist img {
+	margin-right: 15px;
+}
+
+.vjs-playlist-title-container cite {
+	display: none !important;
+}
+
+.vertical .one-up .item>.text-wrapper {
+	margin-top: 40px;
+	width: 100% !important;
+	float: left;
+}
+
+.one-up .text-wrapper {
+	width:100%;
+}
+
+.video-js .vjs-big-play-button {
+	border-radius: 50%;
+	width: 60px;
+	height: 60px;
+	background-color: transparent;
+}
+.vjs-playlist .vjs-playlist-duration {
+	top: auto;
+}
+.section-header a.download-this-article {
+	position: absolute;
+	right: 0;
+	top: -16px;
+}
+.download-this-article .mck-radial-download-icon {
+	font-size: 28px;
+	display: inline-block;
+	margin-right: 10px;
+	margin-top: 4px;
+}
+
+.download-this-article .mck-radial-download-icon::before {
+	content: "\e913";
+	font-family: 'mck-font-icons'!important;
+	margin-left: 4px;
+}
+.download-this-article span {
+	color: #1F40E6;
+	font-weight:300;
+}
+
+[class*=" mck-"]:before, [class^=mck-]:before {
+	font-family: mck-icons;
+	speak: none;
+	font-style: normal;
+	font-weight: 400;
+	font-variant: normal;
+	text-transform: none;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+}
+
+.section-header {
+	position: relative;
+	font-family: 'McKinsey Theinhardt', 'Helvetica Neue', Calibri, Corbel, Helvetica, Roboto, Droid, sans-serif!important;
+	font-weight: 500;
+	margin-top: 0;
+	margin-bottom: 30px;
+	color: #00306e !important;
+	font-size: 16px;
+	line-height: 1.2;
+	padding-bottom: 9px;
+	border-bottom: 1px solid #d4d4d4;
+
+}
+
+.headline {
+	font-family: 'Bower', 'Georgia', 'Times New Roman', serif!important;
+	color: #000 !important;
+}
+
+.vertical .vjs-playlist .vjs-playlist-item cite, .vjs-playlist .vjs-playlist-item cite.vjs-playlist-name  {
+	font-family: 'McKinsey Theinhardt', 'Helvetica Neue', Calibri, Corbel, Helvetica, Roboto, Droid, sans-serif!important;
+	color: #1f40e6;
+	font-weight: 500;
+}
+
+.vjs-playlist-thumbnail.vjs-playlist-now-playing cite.vjs-playlist-name {
+
+}
+
+.description {
+	max-width: 80%;
+}
+
+.playlist-container.preview-player-dimensions.vjs-fluid {
+	padding-top:0 !important;
+}
+
+@media screen and (max-width: 73.6875em)
+	.playlist-container.preview-player-dimensions.vjs-fluid {
+		padding-top: 0;
+		height: auto;
+		margin: 0;
+		min-width: 200px;
+	}

@@ -1,0 +1,9 @@
+name = Video Playlist
+description = Provides a video playlist for the site.
+core = 7.x
+package = Mckinsey & Company
+dependencies[] = paragraphs:paragraphs
+dependencies[] = jquery_update
+dependencies[] = video_metadata
+configure = admin/config/media/videoplaylist
+

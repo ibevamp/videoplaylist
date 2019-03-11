@@ -1,0 +1,34 @@
+<?php
+
+/**
+ * Implements hook_schema_alter().
+ */
+function video_metadata_schema_alter(&$schema) {
+  $schema['file_managed']['fields']['duration'] = array(
+    'description' => 'The duration of the video file.',
+    'type' => 'varchar',
+    'not null' => FALSE,
+		'default' => NULL,
+    'length' => 8
+  );
+}
+
+/**
+ * Implements hook_install().
+ */
+function video_metadata_install() {
+  $schema = array();
+  // It's OK to reference the schema in a hook_install not a hook_update.
+  video_metadata_schema_alter($schema);
+  $definition = $schema['file_managed']['fields']['duration'];
+  // Add the duration field to the db.
+  db_add_field('file_managed', 'duration', $definition);
+}
+
+/**
+ * Implements hook_uninstall().
+ */
+function video_metadata_uninstall() {
+  // Remove the duration field from the db.
+  db_drop_field('file_managed', 'duration');
+}

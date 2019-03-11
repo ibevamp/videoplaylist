@@ -1,0 +1,107 @@
+<?php
+
+require __DIR__ . '/vendor/autoload.php';
+
+/**
+ * Implements hook_menu().
+ */
+function video_metadata_menu() {
+  $items = array();
+
+  $items['admin/config/media/video-metadata/settings'] = array(
+    'title' => 'Video MetaData',
+    'description' => 'Configure video file metadata',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('video_metadata_admin_form'),
+    'access arguments' => array('administer site configuration'),
+    'type' => MENU_NORMAL_ITEM,
+  );
+
+  return $items;
+}
+
+/**
+ * Form API admin form settings page.
+ */
+function video_metadata_admin_form() {
+  $form = array();
+
+  $form['plugin'] = array(
+    '#type' => 'select',
+    '#default_value' => variable_get('plugin', 0),
+    '#description' => t('Choose the plugin to retrieve metadata (getID3 included FFmpeg must be installed on server).'),
+    '#options' => array(
+      0 => 'getID3',
+      1 => 'FFmpeg'
+    ),
+    '#title' => t('Plugin'),
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+ * Implements hook_file_presave() to retrieve the file before it is saved.
+ * Use getID3() or FFmpeg to retrieve the duration of the video and format it.
+ * Write the output to watchdog and add it to the file metadata.
+ */
+function video_metadata_file_presave($file) {
+  if (strpos($file->filemime, 'video') !== false) {
+    // Get video url in the filesystem from the file object uri.
+    $uri = $file->uri;
+    $url = file_create_url($uri);
+
+    // Get selected plugin for extracting video data from admin settings (0 = getID3, 1 = FFmpeg). 
+    $plugin = variable_get('plugin', 0);
+
+    if ($plugin == 0) {
+      // Copy remote file locally to analyze with getID3().
+      if ($fp_remote = fopen($url, 'rb')) {
+        $localtempfilename = tempnam('/tmp', 'getID3');
+        if ($fp_local = fopen($localtempfilename, 'wb')) {
+          while ($buffer = fread($fp_remote, 8192)) {
+            fwrite($fp_local, $buffer);
+          }
+          fclose($fp_local);
+
+          // Initialize getID3 engine.
+          $getID3 = new getID3;
+
+          // Use getID3 to analyze the newly created local file and extract the duration.
+          $ThisFileInfo = $getID3->analyze($localtempfilename);
+          $durationForm = $ThisFileInfo['playtime_seconds'];
+          unlink($localtempfilename);
+        }
+        fclose($fp_remote);
+      }
+	  } elseif ($plugin == 1) {
+      // Call the FFmpeg FFProbe class to retieve the video duration
+      $ffprobe = FFMpeg\FFProbe::create();
+      $durationSec = $ffprobe
+        ->format($url) // extracts file informations
+        ->get('duration');
+
+      // Format video duration.
+      $mins = floor($durationSec / 60 % 60);
+      $secs = floor($durationSec % 60);
+      $durationForm = sprintf('%02d:%02d', $mins, $secs);
+		}
+
+    // Write duration to watchdog for debugging.
+    $replacements = array('!term' => $durationForm);
+    $message = 'The duration of the video after upload is "!term"';
+    watchdog('video_metadata', $message, $replacements, WATCHDOG_NOTICE);
+
+    // Add the duration to cores file metadata array.
+	  $file->duration = $durationForm;
+	}
+}
+
+function video_metadata_entity_property_info_alter(&$info) {
+	$info['file']['properties']['duration'] = array(
+    'label' => 'Video Duration',
+    'description' => 'The duration of the video',
+    'type' => 'text',
+    'schema field' => 'duration'
+  );
+}
