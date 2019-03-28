@@ -1,7 +1,12 @@
 <?php
-
 $node = menu_get_object('node');
+
+$anchorLink = !empty($variables['element']['#object']->field_playlist_video_anchor_link['und'][0]['value'])? $variables['element']['#object']->field_playlist_video_anchor_link['und'][0]['value'] : "";
+
+$heading = !empty($variables['element']['#object']->field_playlist_video_heading['und'][0]['value'])? $variables['element']['#object']->field_playlist_video_heading['und'][0]['value'] : "";
+$headingColor = !empty($variables['element']['#object']->field_playlist_video_title_color['und'][0]['rgb']) ? $variables['element']['#object']->field_playlist_video_title_color['und'][0]['rgb'] : 0;
 $horizontalBool = !empty($variables['element']['#object']->field_playlist_is_horizontal['und'][0]['value']) ? $variables['element']['#object']->field_playlist_is_horizontal['und'][0]['value'] : 0;
+
 $isHorizontal = 'false';
 $class = 'vertical';
 
@@ -18,17 +23,35 @@ $paraID = key($variables['element'][0]['entity']['paragraphs_item']);
 
 
 ?>
-<div class="wrapper">
-<div class="player-container <?php print $class; ?>  main-preview-player">
+
+<style type="text/css">
+      <?php if(!empty($variables['element']['#object']->field_playlist_video_title_color['und'][0]['rgb'])) { ?>
+	  <?php echo ".para-".$paraID; ?>.player-container .video-data-description-wrapper .video-data-title,
+	  <?php echo ".para-".$paraID; ?>.player-container .vjs-playlist .vjs-playlist-item cite, 
+	  <?php echo ".para-".$paraID; ?>.player-container .vjs-playlist .vjs-playlist-item cite.vjs-playlist-name{
+		  color:<?php echo $headingColor?> !important;
+	  }
+	  <?php } ?>
+</style>
+
+ <?php if(!empty($variables['element']['#object']->field_playlist_video_anchor_link['und'][0]['value'])){ ?>
+	<a name="<?php echo $anchorLink; ?>" id="<?php echo $anchorLink; ?>" class="anchored-link"></a>
+<?php } ?>
+
+<div class="wrapper video-playlist-wrapper">
+<div class="player-container <?php print $class; ?>  main-preview-player <?php echo "para-".$paraID; ?>">
     <section id="heading" class="up one-up one-up-medium">
-        <header class="text-l module-header">
-            <h3 class="headline"><?php print $node->title; ?></h3>
+         <?php if(!empty($variables['element']['#object']->field_playlist_video_heading['und'][0]['value'])){ ?>
+		<header class="text-l module-header">
+           <h3 class="headline"><?php print $heading; ?></h3>
         </header>
+		<?php } ?>
     </section>
     <section id="one-up-medium" class="up one-up one-up-medium">
         <div class="video-data-section text-m block-list">
 
-            <video
+            <div class="videojs-wrapper">
+			<video
                     id="preview-player"
                     class="video-js vjs-default vjs-big-play-button vjs-big-play-centered"
                     height="300"
@@ -36,6 +59,7 @@ $paraID = key($variables['element'][0]['entity']['paragraphs_item']);
                     controls>
 
             </video>
+			</div>
 <?php
 $count = 0;
 foreach($variables['element'] as $key=>$item){

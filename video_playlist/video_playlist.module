@@ -45,8 +45,10 @@ function video_playlist_theme_registry_alter(&$theme_registry)
 function video_playlist_preprocess_page(&$variables){
     global $theme_key;
     $scripts_base_path = 'sites/all/themes/' . $theme_key . '/javascript/';
+	$css_base_path = 'sites/all/themes/' . $theme_key . '/css/';
     $scripts_base_path2 = 'sites/all/themes/' . $theme_key . '/js/';
     $scripts = drupal_add_js();
+	$css = drupal_add_css();
 
     if(!isset($scripts[$scripts_base_path . 'video.js']) && !isset($scripts[$scripts_base_path2 . 'video.js'])) {
         drupal_add_js(drupal_get_path('module','video_playlist') . "/js/video.js", array('group' => JS_THEME, 'weight' => JS_DEFAULT + 100, 'every_page' => FALSE));
@@ -59,7 +61,9 @@ function video_playlist_preprocess_page(&$variables){
     }
     drupal_add_js(drupal_get_path('module','video_playlist') . "/js/script.js", array('group' => JS_THEME, 'weight' => JS_DEFAULT + 100, 'every_page' => FALSE));
     drupal_add_css(drupal_get_path('module','video_playlist') . "/css/mck-fonts.css", array('group' => CSS_THEME, 'weight' => CSS_THEME + 100, 'every_page' => FALSE));
-    drupal_add_css(drupal_get_path('module','video_playlist') . "/css/video-js.css", array('group' => CSS_THEME, 'weight' => CSS_THEME + 100, 'every_page' => FALSE));
+    if(!isset($css[$css_base_path . 'video-js.css'])) {
+       drupal_add_css(drupal_get_path('module','video_playlist') . "/css/video-js.css", array('group' => CSS_THEME, 'weight' => CSS_THEME + 100, 'every_page' => FALSE));
+    } 
     drupal_add_css(drupal_get_path('module','video_playlist') . "/css/videojs-playlist-ui.css", array('group' => CSS_THEME,  'weight' => CSS_THEME + 100, 'every_page' => FALSE));
     drupal_add_css(drupal_get_path('module','video_playlist') . "/css/base-theme.css", array('group' => 200, 'weight' => CSS_THEME + 9999, 'every_page' => FALSE));
 

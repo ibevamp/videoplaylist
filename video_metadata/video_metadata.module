@@ -93,7 +93,7 @@ function video_metadata_file_presave($file) {
     watchdog('video_metadata', $message, $replacements, WATCHDOG_NOTICE);
 
     // Add the duration to cores file metadata array.
-	  $file->duration = $durationForm;
+	  $file->duration = number_format($durationForm, 2);
 	}
 }
 
