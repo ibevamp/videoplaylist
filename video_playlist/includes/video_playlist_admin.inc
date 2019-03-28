@@ -211,9 +211,9 @@ function video_playlist_create_paragraph_bundles() {
 	}
 
 	// Check if our field is not already created.
-	if (!field_info_field('field_playlist_video_poster')) {
+	if (!field_info_field('field_pvp')) {
 		$field = array(
-			'field_name' => 'field_playlist_video_poster',
+			'field_name' => 'field_pvp',
 			'type' => 'image',
 		);
 		field_create_field($field);
@@ -306,10 +306,10 @@ function video_playlist_create_paragraph_bundles() {
     	field_create_instance($instance);
   	}
 
-	if(!field_info_instance('paragraphs_item', 'field_playlist_video_poster', 'playlist_video')) {
+	if(!field_info_instance('paragraphs_item', 'field_pvp', 'playlist_video')) {
 		// Create the instance on the bundle.
 		$instance = array(
-			'field_name' => 'field_playlist_video_poster',
+			'field_name' => 'field_pvp',
 			'entity_type' => 'paragraphs_item',
 			'bundle' => 'playlist_video', // If your entity does not have bundles, this is the same as the entity type.
 			'label' => 'Playlist Video Poster',
@@ -459,7 +459,7 @@ function video_playlist_create_test_content($contentType, $paraField) {
 			file_save($file);
 		}
 
-		$paragraph->field_playlist_video_poster[LANGUAGE_NONE][0] = array(
+		$paragraph->field_pvp[LANGUAGE_NONE][0] = array(
 			'fid' => $file->fid,
 			'display' => 1,
 			'description' => '',
@@ -505,7 +505,7 @@ function video_playlist_create_test_content($contentType, $paraField) {
 			file_save($file);
 		}
 
-		$paragraph->field_playlist_video_poster[LANGUAGE_NONE][0] = array(
+		$paragraph->field_pvp[LANGUAGE_NONE][0] = array(
 			'fid' => $file->fid,
 			'display' => 1,
 			'description' => '',
@@ -551,7 +551,7 @@ function video_playlist_create_test_content($contentType, $paraField) {
 			file_save($file);
 		}
 
-		$paragraph->field_playlist_video_poster[LANGUAGE_NONE][0] = array(
+		$paragraph->field_pvp[LANGUAGE_NONE][0] = array(
 			'fid' => $file->fid,
 			'display' => 1,
 			'description' => '',

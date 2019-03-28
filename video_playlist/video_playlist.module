@@ -96,7 +96,7 @@ function video_playlist_preprocess_field(array &$vars) {
         foreach($items as $item){
 
             $paraID = key($item['entity']['paragraphs_item']);
-            $poster = !empty($item['entity']['paragraphs_item'][$paraID]['field_playlist_video_poster'][0]['#item']['uri']) ? file_create_url($item['entity']['paragraphs_item'][$paraID]['field_playlist_video_poster'][0]['#item']['uri']) : '';
+            $poster = !empty($item['entity']['paragraphs_item'][$paraID]['field_pvp'][0]['#item']['uri']) ? file_create_url($item['entity']['paragraphs_item'][$paraID]['field_pvp'][0]['#item']['uri']) : '';
             $video = !empty($item['entity']['paragraphs_item'][$paraID]['field_playlist_video']['#items'][0]['uri']) ? file_create_url($item['entity']['paragraphs_item'][$paraID]['field_playlist_video']['#items'][0]['uri']) : '';
             $vars['video_urls'][] = $video;
             $title = !empty($item['entity']['paragraphs_item'][$paraID]['field_playlist_video_title']['#items'][0]['value']) ? $item['entity']['paragraphs_item'][$paraID]['field_playlist_video_title']['#items'][0]['value'] : '';
