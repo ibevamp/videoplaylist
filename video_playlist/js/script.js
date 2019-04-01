@@ -1,6 +1,6 @@
 jQuery(document).ready(function ($) {
 if(!$("body").hasClass('page-node-edit')){
-    $('.vjs-playlist .vjs-playlist-item').on('click', function () {
+    $('.vjs-playlist .vjs-playlist-item').on('click touchstart', function () {
 
         var index = $(this).index();
 
