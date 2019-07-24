@@ -1,5 +1,6 @@
 .video-playlist-wrapper{
-	clear: both
+	clear: both;
+	margin-top: 70px;
 }
 .player-container {
 	display: flex;
