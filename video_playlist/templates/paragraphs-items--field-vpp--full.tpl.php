@@ -78,7 +78,7 @@ foreach($variables['element'] as $key=>$item){
             <div class="video-data-description-wrapper <?php if($count!=0) print 'hide';?>">
 
                 <div class="text-wrapper">
-                    <h3 class="section-header">zzAbout this Video
+                    <h3 class="section-header">About this Video
                         <?php if($download){ ?>
                             <a href="<?php print $videourl;?>" download="" class="download-this-article">
                                 <span>Download</span>
