@@ -3,7 +3,8 @@
 /**
  * Implements hook_menu().
  */
-function video_playlist_menu() {
+function video_playlist_menu()
+{
 
     $items = array();
 
@@ -42,95 +43,113 @@ function video_playlist_theme_registry_alter(&$theme_registry)
     }
 }
 
-function video_playlist_preprocess_page(&$variables){
+function video_playlist_preprocess_page(&$variables)
+{
     global $theme_key;
     $scripts_base_path = 'sites/all/themes/' . $theme_key . '/javascript/';
-	$css_base_path = 'sites/all/themes/' . $theme_key . '/css/';
+    $css_base_path = 'sites/all/themes/' . $theme_key . '/css/';
     $scripts_base_path2 = 'sites/all/themes/' . $theme_key . '/js/';
     $scripts = drupal_add_js();
-	$css = drupal_add_css();
+    $css = drupal_add_css();
 
-    if(!isset($scripts[$scripts_base_path . 'video.js']) && !isset($scripts[$scripts_base_path2 . 'video.js'])) {
-        drupal_add_js(drupal_get_path('module','video_playlist') . "/js/video.js", array('group' => JS_THEME, 'weight' => JS_DEFAULT + 100, 'every_page' => FALSE));
+    if (!isset($scripts[$scripts_base_path . 'video.js']) && !isset($scripts[$scripts_base_path2 . 'video.js'])) {
+        drupal_add_js(drupal_get_path('module', 'video_playlist') . "/js/video.js", array('group' => JS_THEME, 'weight' => JS_DEFAULT + 100, 'every_page' => FALSE));
     };
-    if(!isset($scripts[$scripts_base_path . 'videojs-playlist.js']) && !isset($scripts[$scripts_base_path2 . 'videojs-playlist.js'])) {
-        drupal_add_js(drupal_get_path('module','video_playlist') . "/js/videojs-playlist.js", array('group' => JS_THEME, 'weight' => JS_DEFAULT + 100, 'every_page' => FALSE));
+    if (!isset($scripts[$scripts_base_path . 'videojs-playlist.js']) && !isset($scripts[$scripts_base_path2 . 'videojs-playlist.js'])) {
+        drupal_add_js(drupal_get_path('module', 'video_playlist') . "/js/videojs-playlist.js", array('group' => JS_THEME, 'weight' => JS_DEFAULT + 100, 'every_page' => FALSE));
     }
-    if(!isset($scripts[$scripts_base_path . 'videojs-playlist.js']) && !isset($scripts[$scripts_base_path2 . 'videojs-playlist.js'])) {
-        drupal_add_js(drupal_get_path('module','video_playlist') . "/js/videojs-playlist-ui.js", array('group' => JS_THEME, 'weight' => JS_DEFAULT + 100, 'every_page' => FALSE));
+    if (!isset($scripts[$scripts_base_path . 'videojs-playlist.js']) && !isset($scripts[$scripts_base_path2 . 'videojs-playlist.js'])) {
+        drupal_add_js(drupal_get_path('module', 'video_playlist') . "/js/videojs-playlist-ui.js", array('group' => JS_THEME, 'weight' => JS_DEFAULT + 100, 'every_page' => FALSE));
     }
-    drupal_add_js(drupal_get_path('module','video_playlist') . "/js/script.js", array('group' => JS_THEME, 'weight' => JS_DEFAULT + 100, 'every_page' => FALSE));
-    drupal_add_css(drupal_get_path('module','video_playlist') . "/css/mck-fonts.css", array('group' => CSS_THEME, 'weight' => CSS_THEME + 100, 'every_page' => FALSE));
-    if(!isset($css[$css_base_path . 'video-js.css'])) {
-       drupal_add_css(drupal_get_path('module','video_playlist') . "/css/video-js.css", array('group' => CSS_THEME, 'weight' => CSS_THEME + 100, 'every_page' => FALSE));
-    } 
-    drupal_add_css(drupal_get_path('module','video_playlist') . "/css/videojs-playlist-ui.css", array('group' => CSS_THEME,  'weight' => CSS_THEME + 100, 'every_page' => FALSE));
-    drupal_add_css(drupal_get_path('module','video_playlist') . "/css/base-theme.css", array('group' => 200, 'weight' => CSS_THEME + 9999, 'every_page' => FALSE));
+    drupal_add_js(drupal_get_path('module', 'video_playlist') . "/js/script.js", array('group' => JS_THEME, 'weight' => JS_DEFAULT + 100, 'every_page' => FALSE));
+    drupal_add_css(drupal_get_path('module', 'video_playlist') . "/css/mck-fonts.css", array('group' => CSS_THEME, 'weight' => CSS_THEME + 100, 'every_page' => FALSE));
+    if (!isset($css[$css_base_path . 'video-js.css'])) {
+        drupal_add_css(drupal_get_path('module', 'video_playlist') . "/css/video-js.css", array('group' => CSS_THEME, 'weight' => CSS_THEME + 100, 'every_page' => FALSE));
+    }
+    drupal_add_css(drupal_get_path('module', 'video_playlist') . "/css/videojs-playlist-ui.css", array('group' => CSS_THEME, 'weight' => CSS_THEME + 100, 'every_page' => FALSE));
+    drupal_add_css(drupal_get_path('module', 'video_playlist') . "/css/base-theme.css", array('group' => 200, 'weight' => CSS_THEME + 9999, 'every_page' => FALSE));
 
 }
 
-function video_playlist_preprocess_field(array &$vars) {
+function video_playlist_preprocess_field(array &$vars)
+{
 
-    if ($vars['element']['#field_name'] == 'field_vpp') {
-        $horizontalBool = !empty($vars['element']['#object']->field_playlist_is_horizontal['und'][0]['value']) ? $vars['element']['#object']->field_playlist_is_horizontal['und'][0]['value'] : 0;
+    if ($vars['element']['#field_name'] == 'field_paragraph') {
         $items = $vars['items'];
+        foreach ($items as $key => $i) {
+            $parentID = key($i['entity']['paragraphs_item']);
 
-        $isHorizontal = 'false';
-        $class = 'vertical';
+            $horizontalBool = !empty(['entity']['paragraphs_item'][$parentID]['field_vpp']['#object']->field_playlist_is_horizontal['und'][0]['value']) ? ['entity']['paragraphs_item'][$parentID]['field_vpp']['#object']->field_playlist_is_horizontal['und'][0]['value'] : 0;
 
-        if($horizontalBool == 1) {
-            $isHorizontal = 'true';
-            $class = "horizontal";
-        }
+            $isHorizontal = 'false';
+            $class = 'vertical';
 
-        $options = '{
+            if ($horizontalBool == 1) {
+                $isHorizontal = 'true';
+                $class = "horizontal";
+            }
+
+            $options = '{
             horizontal:' . $isHorizontal . '
         }';
 
-        $js = "var player = videojs('preview-player', {
-            fluid: true,
-        });
-        player.addClass('" . $class . "');
-        player.playlist([";
+            $parent = $i['entity']['paragraphs_item'][$parentID]['field_vpp'];
+            $js .= "var player" . $key . " = videojs('preview-player" . $parentID . "', {
+                fluid: true,
+            });
+            player" . $key . ".addClass('" . $class . "');
+            player" . $key . ".playlist([";
+            foreach ($parent as $id => $child) {
 
-        foreach($items as $item){
+                if (is_array($child)) {
+                    $pItems = reset(reset($child));
+                    if (is_array($pItems)) {
+                        foreach ($pItems as $id => $item) {
+//                            ddl($item);
+                            $paraID = key($item['entity']['paragraphs_item']);
+                            $poster = !empty($item['field_pvp']['#items'][0]['uri']) ? file_create_url($item['field_pvp']['#items'][0]['uri']) : '';
+                            $video = !empty($item['field_playlist_video']['#items'][0]['uri']) ? file_create_url($item['field_playlist_video']['#items'][0]['uri']) : '';
+                            $vars['video_urls'][] = $video;
+                            $title = !empty($item['field_playlist_video_title']['#items'][0]['value']) ? $item['field_playlist_video_title']['#items'][0]['value'] : '';
+                            $description = !empty($item['field_playlist_video_description']['#items'][0]['value']) ? $item['field_playlist_video_description']['#items'][0]['value'] : '_';
+                            $duration = !empty($item['entity']['paragraphs_item'][$paraID]['field_playlist_video']['#items'][0]['duration']) ? $item['entity']['paragraphs_item'][$paraID]['field_playlist_video']['#items'][0]['duration'] : '0:00';
+//                            $download = !empty($item['entity']['paragraphs_item'][$paraID]['field_playlist_video_download']['#items'][0]['value']) ? $item['entity']['paragraphs_item'][$paraID]['field_playlist_video_download']['#items'][0]['value'] : '';
 
-            $paraID = key($item['entity']['paragraphs_item']);
-            $poster = !empty($item['entity']['paragraphs_item'][$paraID]['field_pvp'][0]['#item']['uri']) ? file_create_url($item['entity']['paragraphs_item'][$paraID]['field_pvp'][0]['#item']['uri']) : '';
-            $video = !empty($item['entity']['paragraphs_item'][$paraID]['field_playlist_video']['#items'][0]['uri']) ? file_create_url($item['entity']['paragraphs_item'][$paraID]['field_playlist_video']['#items'][0]['uri']) : '';
-            $vars['video_urls'][] = $video;
-            $title = !empty($item['entity']['paragraphs_item'][$paraID]['field_playlist_video_title']['#items'][0]['value']) ? $item['entity']['paragraphs_item'][$paraID]['field_playlist_video_title']['#items'][0]['value'] : '';
-            $description = !empty($item['entity']['paragraphs_item'][$paraID]['field_playlist_video_description']['#items'][0]['value']) ? $item['entity']['paragraphs_item'][$paraID]['field_playlist_video_description']['#items'][0]['value'] : '';
-            $duration = !empty($item['entity']['paragraphs_item'][$paraID]['field_playlist_video']['#items'][0]['duration']) ? $item['entity']['paragraphs_item'][$paraID]['field_playlist_video']['#items'][0]['duration'] : '0:00';
-            $download = !empty($item['entity']['paragraphs_item'][$paraID]['field_playlist_video_download']['#items'][0]['value']) ? $item['entity']['paragraphs_item'][$paraID]['field_playlist_video_download']['#items'][0]['value'] : '';
-
-            $js .= "
-            {
-                name: '".$title."',
-                description: '".$description."',
-                duration: '".$duration."',
-                sources: [
-                    { src: '".$video."' },
-                ],
-                thumbnail: [
-                    {
-                        srcset: '".$poster."',
-                        type: 'image/jpeg',
-                        media: '(min-width: 400px;)'
-                    },
-                    {
-                        src: '".$poster."'
+                            $js .= "
+                                    {
+                                        name: '" . $title . "',
+                                        
+                                        description: '".$description."',
+                                        sources: [
+                                            { src: '" . $video . "' },
+                                        ],
+                                        thumbnail: [
+                                            {
+                                                srcset: '" . $poster . "',
+                                                type: 'image/jpeg',
+                                                media: '(min-width: 400px;)'
+                                            },
+                                            {
+                                                src: '" . $poster . "'
+                                            }
+                                        ],
+                                        poster: '" . $poster . "'
+                                    },";
+                            $js .= " ";
+                        }
                     }
-                ],
-                poster: '".$poster."'
-            },";
+                }
+            }
+                $js .= "]);";
+
+        $js .= "player" . $key . ".playlistUi(" . $options . ");";
         } //end foreach
+//        }
 
-        $js .= "]);";
-        $js .= " ";
-        $js .= "player.playlistUi(" . $options . ");";
+//        ddl($js);
 
-        drupal_add_js('jQuery(document).ready(function(){' . $js .'});', 'inline');
+
+        drupal_add_js('jQuery(document).ready(function(){' . $js . '});', 'inline');
 
     } //end if
 
@@ -143,9 +162,10 @@ function video_playlist_preprocess_field(array &$vars) {
  * @param $form_id
  */
 
-function video_playlist_form_alter(&$form, &$form_state, $form_id) {
+function video_playlist_form_alter(&$form, &$form_state, $form_id)
+{
 
-    if($form_id == "video_playlist_node_form"){
+    if ($form_id == "video_playlist_node_form") {
         //$form['#validate'][] = "validate_video_paragraph";
 
     };
@@ -157,17 +177,18 @@ function video_playlist_form_alter(&$form, &$form_state, $form_id) {
  * @param $form_state
  */
 
-function validate_video_paragraph(&$form, $form_state){
+function validate_video_paragraph(&$form, $form_state)
+{
     $total = 0;
 
-    foreach($form_state['values']['field_paragraph']['und'] as $key => $para){
-        if(isset($para['field_vpp']))
+    foreach ($form_state['values']['field_paragraph']['und'] as $key => $para) {
+        if (isset($para['field_vpp']))
             $total++;
     }
 
-    if($total > 1){
+    if ($total > 1) {
 
-        form_set_error('playlist_video_wrapper',"Please use only one video playlist paragraph per node");
+        form_set_error('playlist_video_wrapper', "Please use only one video playlist paragraph per node");
     }
 
 

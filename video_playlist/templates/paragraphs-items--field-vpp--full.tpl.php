@@ -14,7 +14,7 @@ if ($horizontalBool == 1) {
     $isHorizontal = 'true';
     $class = "horizontal";
 }
-
+$parentID = $variables['element']['#object']->item_id;
 $paraID = key($variables['element'][0]['entity']['paragraphs_item']);
 //$download    = isset($variables['element'][0]['entity']['paragraphs_item'][$paraID]['field_playlist_video_download']['#items'][0]['value']) ? $variables['element'][0]['entity']['paragraphs_item'][$paraID]['field_playlist_video_download']['#items'][0]['value'] : NULL;
 
@@ -51,8 +51,9 @@ $paraID = key($variables['element'][0]['entity']['paragraphs_item']);
         <div class="video-data-section text-m block-list">
 
             <div class="videojs-wrapper">
+
 			<video
-                    id="preview-player"
+                    id="preview-player<?php print $parentID;?>"
                     class="video-js vjs-default vjs-big-play-button vjs-big-play-centered"
                     height="300"
                     width="600"
@@ -77,7 +78,7 @@ foreach($variables['element'] as $key=>$item){
             <div class="video-data-description-wrapper <?php if($count!=0) print 'hide';?>">
 
                 <div class="text-wrapper">
-                    <h3 class="section-header">About this Video
+                    <h3 class="section-header">zzAbout this Video
                         <?php if($download){ ?>
                             <a href="<?php print $videourl;?>" download="" class="download-this-article">
                                 <span>Download</span>

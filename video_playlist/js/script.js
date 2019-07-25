@@ -4,9 +4,8 @@ if(!$("body").hasClass('page-node-edit')){
 
         var index = $(this).index();
 
-        $(".video-data-description-wrapper").addClass("hide");
-        $(".video-data-description-wrapper").eq(index).removeClass("hide");
-
+        $(this).closest(".video-playlist-wrapper").find(".video-data-description-wrapper").addClass("hide");
+        $(this).closest(".video-playlist-wrapper").find(".video-data-description-wrapper").eq(index).removeClass("hide");
     });
 }
 });
