@@ -77,78 +77,73 @@ function video_playlist_preprocess_field(array &$vars)
     if ($vars['element']['#field_name'] == 'field_paragraph') {
         $items = $vars['items'];
         foreach ($items as $key => $i) {
+
             $parentID = key($i['entity']['paragraphs_item']);
+            if ($i['entity']['paragraphs_item'][$parentID]['#bundle'] == "pvw") {
 
-            $horizontalBool = !empty(['entity']['paragraphs_item'][$parentID]['field_vpp']['#object']->field_playlist_is_horizontal['und'][0]['value']) ? ['entity']['paragraphs_item'][$parentID]['field_vpp']['#object']->field_playlist_is_horizontal['und'][0]['value'] : 0;
+                $horizontalBool = !empty($i['entity']['paragraphs_item'][$parentID]['field_vpp']['#object']->field_playlist_is_horizontal['und'][0]['value']) ? $i['entity']['paragraphs_item'][$parentID]['field_vpp']['#object']->field_playlist_is_horizontal['und'][0]['value'] : 0;
+                ddl($horizontalBool);
+                $isHorizontal = 'false';
+                $class = 'vertical';
 
-            $isHorizontal = 'false';
-            $class = 'vertical';
+                if ($horizontalBool == 1) {
+                    $isHorizontal = 'true';
+                    $class = "horizontal";
+                }
 
-            if ($horizontalBool == 1) {
-                $isHorizontal = 'true';
-                $class = "horizontal";
-            }
+                $options = '{ horizontal:' . $isHorizontal . '}';
 
-            $options = '{
-            horizontal:' . $isHorizontal . '
-        }';
+                $parent = $i['entity']['paragraphs_item'][$parentID]['field_vpp'];
+                $js .= "var player" . $key . " = videojs('preview-player" . $parentID . "', {
+                    fluid: true,
+                });
+                player" . $key . ".addClass('" . $class . "');
+                player" . $key . ".playlist([";
+                foreach ($parent as $id => $child) {
 
-            $parent = $i['entity']['paragraphs_item'][$parentID]['field_vpp'];
-            $js .= "var player" . $key . " = videojs('preview-player" . $parentID . "', {
-                fluid: true,
-            });
-            player" . $key . ".addClass('" . $class . "');
-            player" . $key . ".playlist([";
-            foreach ($parent as $id => $child) {
+                    if (is_array($child)) {
+                        $pItems = reset(reset($child));
+                        if (is_array($pItems)) {
+                            foreach ($pItems as $id => $item) {
+                                $paraID = key($item['entity']['paragraphs_item']);
+                                $poster = !empty($item['field_pvp']['#items'][0]['uri']) ? file_create_url($item['field_pvp']['#items'][0]['uri']) : '';
+                                $video = !empty($item['field_playlist_video']['#items'][0]['uri']) ? file_create_url($item['field_playlist_video']['#items'][0]['uri']) : '';
+                                $vars['video_urls'][] = $video;
+                                $title = !empty($item['field_playlist_video_title']['#items'][0]['value']) ? $item['field_playlist_video_title']['#items'][0]['value'] : '';
+                                $description = !empty($item['field_playlist_video_description']['#items'][0]['value']) ? $item['field_playlist_video_description']['#items'][0]['value'] : '_';
+                                $duration = !empty($item['entity']['paragraphs_item'][$paraID]['field_playlist_video']['#items'][0]['duration']) ? $item['entity']['paragraphs_item'][$paraID]['field_playlist_video']['#items'][0]['duration'] : '0:00';
+                                //$download = !empty($item['entity']['paragraphs_item'][$paraID]['field_playlist_video_download']['#items'][0]['value']) ? $item['entity']['paragraphs_item'][$paraID]['field_playlist_video_download']['#items'][0]['value'] : '';
 
-                if (is_array($child)) {
-                    $pItems = reset(reset($child));
-                    if (is_array($pItems)) {
-                        foreach ($pItems as $id => $item) {
-//                            ddl($item);
-                            $paraID = key($item['entity']['paragraphs_item']);
-                            $poster = !empty($item['field_pvp']['#items'][0]['uri']) ? file_create_url($item['field_pvp']['#items'][0]['uri']) : '';
-                            $video = !empty($item['field_playlist_video']['#items'][0]['uri']) ? file_create_url($item['field_playlist_video']['#items'][0]['uri']) : '';
-                            $vars['video_urls'][] = $video;
-                            $title = !empty($item['field_playlist_video_title']['#items'][0]['value']) ? $item['field_playlist_video_title']['#items'][0]['value'] : '';
-                            $description = !empty($item['field_playlist_video_description']['#items'][0]['value']) ? $item['field_playlist_video_description']['#items'][0]['value'] : '_';
-                            $duration = !empty($item['entity']['paragraphs_item'][$paraID]['field_playlist_video']['#items'][0]['duration']) ? $item['entity']['paragraphs_item'][$paraID]['field_playlist_video']['#items'][0]['duration'] : '0:00';
-//                            $download = !empty($item['entity']['paragraphs_item'][$paraID]['field_playlist_video_download']['#items'][0]['value']) ? $item['entity']['paragraphs_item'][$paraID]['field_playlist_video_download']['#items'][0]['value'] : '';
-
-                            $js .= "
-                                    {
-                                        name: '" . $title . "',
-                                        
-                                        description: '".$description."',
-                                        sources: [
-                                            { src: '" . $video . "' },
-                                        ],
-                                        thumbnail: [
-                                            {
-                                                srcset: '" . $poster . "',
-                                                type: 'image/jpeg',
-                                                media: '(min-width: 400px;)'
-                                            },
-                                            {
-                                                src: '" . $poster . "'
-                                            }
-                                        ],
-                                        poster: '" . $poster . "'
-                                    },";
-                            $js .= " ";
+                                $js .= "
+                                        {
+                                            name: '" . $title . "',
+                                            
+                                            description: '" . $description . "',
+                                            sources: [
+                                                { src: '" . $video . "' },
+                                            ],
+                                            thumbnail: [
+                                                {
+                                                    srcset: '" . $poster . "',
+                                                    type: 'image/jpeg',
+                                                    media: '(min-width: 400px;)'
+                                                },
+                                                {
+                                                    src: '" . $poster . "'
+                                                }
+                                            ],
+                                            poster: '" . $poster . "'
+                                        },";
+                                $js .= " ";
+                            }
                         }
                     }
                 }
+                    $js .= "]);";
+
+                $js .= "player" . $key . ".playlistUi(" . $options . ");";
             }
-                $js .= "]);";
-
-        $js .= "player" . $key . ".playlistUi(" . $options . ");";
-        } //end foreach
-//        }
-
-//        ddl($js);
-
-
+        }//end foreach
         drupal_add_js('jQuery(document).ready(function(){' . $js . '});', 'inline');
 
     } //end if
